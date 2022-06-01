@@ -21,8 +21,7 @@ void ABaseWeapon::BeginPlay()
 	
 	check(MeshComponent);
 
-
-	//CurrentAmmo.SetDefault(DefaultAmmo);
+	Ammo.SetDefault(DefaultAmmo, this);
 }
 
 void ABaseWeapon::StartFire()
@@ -94,4 +93,19 @@ void ABaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, cons
 	GetWorld()->
 		LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, 
 			ECollisionChannel::ECC_Visibility, CollisionParams);
+}
+
+void ABaseWeapon::DecreaseAmmo()
+{
+	if (Ammo.IsClipEmpty() == true)
+	{
+		return;
+	}
+
+	bool NeedStop = Ammo.DecreaseBullet();
+
+	if (NeedStop == true)
+	{
+		StopFire();
+	}
 }

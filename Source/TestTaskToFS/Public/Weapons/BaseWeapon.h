@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "FAmmoData.h"
+#include "FAmmo.h"
 #include "BaseWeapon.generated.h"
 
 
@@ -39,7 +39,7 @@ protected:
 	void DecreaseAmmo();
 
 private:
-	FAmmoData CurrentAmmo;
+	FAmmo Ammo;
 	
 public:	
 	ABaseWeapon();

@@ -13,6 +13,9 @@ class TESTTASKTOFS_API ABaseWeapon : public AActor
 {
 	GENERATED_BODY()
 
+public:
+	float GetReloadSeconds() const { return SecondsToReload; }
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	USkeletalMeshComponent* MeshComponent;
@@ -25,6 +28,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	FAmmoData DefaultAmmo {15, 10, false};
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	float SecondsToReload = 0.75f;
 
 	bool FireInProgress = false;
 
@@ -48,6 +54,8 @@ public:
 	virtual void StopFire();
 
 	FAmmo GetAmmo() const { return Ammo; }
+	void ChangeClip();
+	bool CanReload();
 
 protected:
 	virtual void BeginPlay() override;

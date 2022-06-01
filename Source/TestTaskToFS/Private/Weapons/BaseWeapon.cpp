@@ -34,6 +34,16 @@ void ABaseWeapon::StopFire()
 	FireInProgress = true;
 }
 
+void ABaseWeapon::ChangeClip()
+{
+	Ammo.ChangeClip();
+}
+
+bool ABaseWeapon::CanReload()
+{
+	return Ammo.CanReload();
+}
+
 void ABaseWeapon::MakeShot(){}
 
 bool ABaseWeapon::GetTraceData(FVector& TraceStart, FVector& TraceEnd) const

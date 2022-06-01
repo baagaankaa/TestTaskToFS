@@ -23,7 +23,7 @@ public:
 	FAmmoData GetCurrentAmmoData() const { return CurrentAmmo; }
 	FAmmoData GetDefaultAmmoData() const { return DefaultAmmo; }
 
-	FOnClipEmptySignature OnClipEmpty;
+	FOnClipEmptySignature OnClipEmptied;
 
 	bool IsClipEmpty() const;
 	bool IsAmmoEmpty() const;

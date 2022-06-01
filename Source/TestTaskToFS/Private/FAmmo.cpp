@@ -39,7 +39,7 @@ bool FAmmo::DecreaseBullet()
 
 	if (IsClipEmpty() == true && IsAmmoEmpty() == false)
 	{
-		OnClipEmpty.Broadcast(Weapon);
+		OnClipEmptied.Broadcast(Weapon);
 		return true;
 	}
 
@@ -83,7 +83,7 @@ bool FAmmo::TryAddAmmo(int32 ClipsAmount)
 	if (IsAmmoEmpty() == true)
 	{
 		CurrentAmmo.Clips = FMath::Clamp(ClipsAmount, 0, DefaultAmmo.Clips + 1);
-		OnClipEmpty.Broadcast(Weapon);
+		OnClipEmptied.Broadcast(Weapon);
 		return true;
 	}
 

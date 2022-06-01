@@ -7,6 +7,9 @@
 #include "BaseCharacter.generated.h"
 
 class UWeaponComponent;
+class UCameraComponent;
+class USpringArmComponent;
+class USphereComponent;
 
 UCLASS()
 class TESTTASKTOFS_API ABaseCharacter : public ACharacter
@@ -18,6 +21,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UWeaponComponent* WeaponComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	UCameraComponent* CameraComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	USpringArmComponent* SpringArmComponent;
 
 public:
 	ABaseCharacter();
@@ -30,4 +37,8 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
+private:
+	void MoveForward(float Amount);
+	void MoveRight(float Amount);
 };

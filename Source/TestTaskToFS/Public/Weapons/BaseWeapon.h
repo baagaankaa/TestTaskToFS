@@ -44,12 +44,13 @@ private:
 public:	
 	ABaseWeapon();
 
+	virtual void StartFire();
+	virtual void StopFire();
+
+	FAmmo GetAmmo() const { return Ammo; }
+
 protected:
 	virtual void BeginPlay() override;
-
-public:	
-	virtual void StartFire();
-	void StopFire();
 
 	
 

@@ -26,7 +26,7 @@ void ARifleWeapon::StopFire()
 
 void ARifleWeapon::MakeShot()
 {
-	if (GetWorld() == nullptr || GetAmmo().IsAmmoEmpty() == true)
+	if (GetWorld() == nullptr || GetAmmo()->IsAmmoEmpty() == true)
 	{
 		StopFire();
 		return;
@@ -42,12 +42,11 @@ void ARifleWeapon::MakeShot()
 	FHitResult HitResult;
 	MakeHit(HitResult, TraceStart, TraceEnd);
 
-	if (HitResult.bBlockingHit == false)
+	if (HitResult.bBlockingHit == true)
 	{
-		return;
+		MakeDamage(HitResult);
 	}
 
-	MakeDamage(HitResult);
 	DecreaseAmmo();
 }
 

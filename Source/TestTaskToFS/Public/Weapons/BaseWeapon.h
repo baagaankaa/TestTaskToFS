@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "FAmmo.h"
+#include "Ammo/AmmoSystem.h"
 #include "BaseWeapon.generated.h"
 
 
@@ -29,7 +29,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	FAmmoData DefaultAmmo {15, 10, false};
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon", Meta = (ClampMin = "0.01"))
 	float SecondsToReload = 0.75f;
 
 	bool FireInProgress = false;
@@ -45,7 +45,7 @@ protected:
 	void DecreaseAmmo();
 
 private:
-	FAmmo Ammo;
+	AmmoSystem* Ammo = nullptr;
 	
 public:	
 	ABaseWeapon();
@@ -53,7 +53,7 @@ public:
 	virtual void StartFire();
 	virtual void StopFire();
 
-	FAmmo GetAmmo() const { return Ammo; }
+	AmmoSystem* GetAmmo() const { return Ammo; }
 	void ChangeClip();
 	bool CanReload();
 

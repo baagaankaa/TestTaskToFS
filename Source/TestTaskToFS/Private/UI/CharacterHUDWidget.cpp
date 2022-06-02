@@ -10,7 +10,7 @@ FString UCharacterHUDWidget::GetBulletAmountFormat(bool& HasAmmo)
 {
 	UWeaponComponent* WeaponComponent = GetCharacterComponent<UWeaponComponent>();
 	
-	FAmmo Ammo;
+	AmmoSystem* Ammo;
 
 	if (WeaponComponent == nullptr || WeaponComponent->GetCurrentAmmo(Ammo) == false)
 	{
@@ -18,8 +18,8 @@ FString UCharacterHUDWidget::GetBulletAmountFormat(bool& HasAmmo)
 		return FString();
 	}
 
-	int32 CurrentAmmoAmount = Ammo.GetCurrentAmmoData().Bullets;
-	int32 AllAmmoAmount = Ammo.GetDefaultAmmoData().Bullets * Ammo.GetCurrentAmmoData().Clips;
+	int32 CurrentAmmoAmount = Ammo->GetCurrentAmmoData().Bullets;
+	int32 AllAmmoAmount = Ammo->GetDefaultAmmoData().Bullets * Ammo->GetCurrentAmmoData().Clips;
 
 	HasAmmo = true;
 	return GetFormatBullet(CurrentAmmoAmount, AllAmmoAmount);
@@ -49,18 +49,7 @@ float UCharacterHUDWidget::GetReloadProcessPercent(bool& InReloadProgress)
 
 FString UCharacterHUDWidget::GetFormatBullet(int32 CurrentAmount, int32 MaxAmount)
 {
-	const int32 MaxLen = 3;
-	const TCHAR PrefixSymbol = '0';
-
-	FString BulletStr = FString::FromInt(CurrentAmount);
-	//const auto SymbolsNumToAdd = MaxLen - BulletStr.Len();
-
-	//if (SymbolsNumToAdd > 0)
-	//{
-		//BulletStr = FString::ChrN(SymbolsNumToAdd, PrefixSymbol).Append(BulletStr);
-	//}
-
-	return BulletStr;
+	return FString::FromInt(CurrentAmount).AppendChar('/').Append(FString::FromInt(MaxAmount));
 }
 
 

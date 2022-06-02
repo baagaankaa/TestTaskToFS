@@ -7,7 +7,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/Controller.h"
 
-ABaseWeapon::ABaseWeapon()
+ABaseWeapon::ABaseWeapon() : Ammo(new AmmoSystem())
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -21,7 +21,7 @@ void ABaseWeapon::BeginPlay()
 	
 	check(MeshComponent);
 
-	Ammo.SetDefault(DefaultAmmo, this);
+	Ammo->SetDefault(DefaultAmmo, this);
 }
 
 void ABaseWeapon::StartFire()
@@ -36,12 +36,12 @@ void ABaseWeapon::StopFire()
 
 void ABaseWeapon::ChangeClip()
 {
-	Ammo.ChangeClip();
+	Ammo->ChangeClip();
 }
 
 bool ABaseWeapon::CanReload()
 {
-	return Ammo.CanReload();
+	return Ammo->CanReload();
 }
 
 void ABaseWeapon::MakeShot(){}
@@ -107,12 +107,12 @@ void ABaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, cons
 
 void ABaseWeapon::DecreaseAmmo()
 {
-	if (Ammo.IsClipEmpty() == true)
+	if (Ammo->IsClipEmpty() == true)
 	{
 		return;
 	}
 
-	bool NeedStop = Ammo.DecreaseBullet();
+	bool NeedStop = Ammo->DecreaseBullet();
 
 	if (NeedStop == true)
 	{

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Ammo/AmmoSystem.h"
 #include "WeaponComponent.generated.h"
 
 class ABaseWeapon;
@@ -33,7 +34,11 @@ public:
 	void StartFire();
 	void StopFire();
 
-	bool TrySetWeapon(TSubclassOf<ABaseWeapon> Weapon);
+	bool TrySetWeapon(TSubclassOf<ABaseWeapon> WeaponType);
+
+	bool GetCurrentAmmo(AmmoSystem*& Ammo);
+
+	bool GetReloadProgress(float& Percent) const;
 
 protected:
 	virtual void BeginPlay() override;

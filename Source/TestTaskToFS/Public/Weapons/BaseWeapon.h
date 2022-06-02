@@ -53,6 +53,8 @@ public:
 	virtual void StartFire();
 	virtual void StopFire();
 
+	virtual bool CanFire(bool ReloadInProgress);
+
 	AmmoSystem* GetAmmo() const { return Ammo; }
 	void ChangeClip();
 	bool CanReload();

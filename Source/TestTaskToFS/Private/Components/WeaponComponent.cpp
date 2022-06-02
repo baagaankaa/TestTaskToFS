@@ -15,7 +15,7 @@ UWeaponComponent::UWeaponComponent()
 
 void UWeaponComponent::StartFire()
 {
-	if (CurrentWeapon == nullptr)
+	if (CurrentWeapon == nullptr || CurrentWeapon->CanFire(ReloadInProgress) == false)
 	{
 		return;
 	}
@@ -31,6 +31,11 @@ void UWeaponComponent::StopFire()
 	}
 
 	CurrentWeapon->StopFire();
+}
+
+void UWeaponComponent::ReloadWeapon()
+{
+	OnClipEmpty(CurrentWeapon);
 }
 
 bool UWeaponComponent::TrySetWeapon(TSubclassOf<ABaseWeapon> WeaponType)
@@ -56,7 +61,6 @@ bool UWeaponComponent::TrySetWeapon(TSubclassOf<ABaseWeapon> WeaponType)
 	
 	DestroyCurrentWeapon();
 
-	UE_LOG(LogWeaponComponent, Display, TEXT("AddUObject"));
 	SpawnedWeapon->GetAmmo()->OnClipEmptied.AddUObject(this, &UWeaponComponent::OnClipEmpty);
 	SpawnedWeapon->SetOwner(Character);
 	
@@ -64,6 +68,16 @@ bool UWeaponComponent::TrySetWeapon(TSubclassOf<ABaseWeapon> WeaponType)
 
 	AttachWeaponToSocket(SpawnedWeapon, Character->GetMesh(), WeaponEquipSocketName);
 	return true;
+}
+
+bool UWeaponComponent::TryAddClips(int32 Amount)
+{
+	if (CurrentWeapon == nullptr)
+	{
+		return false;
+	}
+
+	return CurrentWeapon->GetAmmo()->TryAddAmmo(Amount);
 }
 
 bool UWeaponComponent::GetCurrentAmmo(AmmoSystem*& Ammo)
@@ -104,14 +118,11 @@ void UWeaponComponent::AttachWeaponToSocket(ABaseWeapon* Weapon, USceneComponent
 
 void UWeaponComponent::OnClipEmpty(ABaseWeapon* ClipEmptyWeapon)
 {
-	UE_LOG(LogWeaponComponent, Display, TEXT("In Function ChangeClip"));
-
 	if (ClipEmptyWeapon == nullptr || CurrentWeapon != ClipEmptyWeapon)
 	{
 		return;
 	}
 
-	UE_LOG(LogWeaponComponent, Display, TEXT("StartChangeClip"));
 	ChangeClip();
 }
 
@@ -135,6 +146,8 @@ void UWeaponComponent::ChangeClip()
 	{
 		return;
 	}
+
+	ReloadInProgress = true;
 
 	CurrentWeapon->StopFire();
 	GetWorld()->GetTimerManager()

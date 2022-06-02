@@ -33,8 +33,10 @@ public:
 
 	void StartFire();
 	void StopFire();
+	void ReloadWeapon();
 
 	bool TrySetWeapon(TSubclassOf<ABaseWeapon> WeaponType);
+	bool TryAddClips(int32 Amount);
 
 	bool GetCurrentAmmo(AmmoSystem*& Ammo);
 

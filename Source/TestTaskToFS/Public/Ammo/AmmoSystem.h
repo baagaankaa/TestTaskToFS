@@ -12,6 +12,8 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FOnClipEmptySignature, ABaseWeapon*);
 class AmmoSystem
 {
 private:
+	int32 RemaindeBullets;
+
 	FAmmoData DefaultAmmo;
 	FAmmoData CurrentAmmo;
 
@@ -33,10 +35,12 @@ public:
 	bool DecreaseBullet();
 
 	void ChangeClip();
+	int32 GetAllBullets();
 
 	bool TryAddAmmo(int32 ClipsAmount);
 
 private:
 	void SetBullet(int Amount);
 	void SetFullBullet();
+	void SetRemaineBullet(int Amount);
 };

@@ -19,7 +19,7 @@ FString UCharacterHUDWidget::GetBulletAmountFormat(bool& HasAmmo)
 	}
 
 	int32 CurrentAmmoAmount = Ammo->GetCurrentAmmoData().Bullets;
-	int32 AllAmmoAmount = Ammo->GetDefaultAmmoData().Bullets * Ammo->GetCurrentAmmoData().Clips;
+	int32 AllAmmoAmount = Ammo->GetAllBullets();
 
 	HasAmmo = true;
 	return GetFormatBullet(CurrentAmmoAmount, AllAmmoAmount);
@@ -41,8 +41,11 @@ float UCharacterHUDWidget::GetReloadProcessPercent(bool& InReloadProgress)
 		return 0.0f;
 	}
 
+
 	float ProgressPercent;
 	InReloadProgress = WeaponComponent->GetReloadProgress(ProgressPercent);
+
+	UE_LOG(LogWidget, Display, TEXT("InProgress: %i, Percent: %f"), InReloadProgress, ProgressPercent);
 
 	return ProgressPercent;
 }

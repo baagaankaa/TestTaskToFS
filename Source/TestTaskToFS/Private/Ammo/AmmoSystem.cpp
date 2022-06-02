@@ -21,7 +21,10 @@ bool AmmoSystem::IsClipEmpty() const
 
 bool AmmoSystem::IsAmmoEmpty() const
 {
-	return CurrentAmmo.Infinite == false && CurrentAmmo.Clips == 0 && IsClipEmpty() == true;
+	return  CurrentAmmo.Infinite == false && 
+			CurrentAmmo.Clips == 0 &&
+			RemaindeBullets == 0 &&
+			IsClipEmpty() == true;
 }
 
 bool AmmoSystem::IsAmmoFull() const
@@ -32,7 +35,7 @@ bool AmmoSystem::IsAmmoFull() const
 
 bool AmmoSystem::CanReload() const
 {
-	return CurrentAmmo.Bullets < DefaultAmmo.Bullets&& CurrentAmmo.Clips > 0;
+	return CurrentAmmo.Bullets < DefaultAmmo.Bullets && (CurrentAmmo.Clips > 0 || RemaindeBullets > 0);
 }
 
 bool AmmoSystem::DecreaseBullet()
@@ -41,7 +44,6 @@ bool AmmoSystem::DecreaseBullet()
 
 	if (IsClipEmpty() == true && IsAmmoEmpty() == false)
 	{
-		UE_LOG(LogAmmo, Display, TEXT("Broadcast"));
 		OnClipEmptied.Broadcast(TargetWeapon);
 		return true;
 	}
@@ -59,6 +61,17 @@ void AmmoSystem::SetFullBullet()
 	SetBullet(DefaultAmmo.Bullets);
 }
 
+void AmmoSystem::SetRemaineBullet(int Amount)
+{
+	RemaindeBullets = FMath::Clamp(Amount, 0, DefaultAmmo.Bullets * DefaultAmmo.Clips);
+
+	if (RemaindeBullets / DefaultAmmo.Bullets > 0)
+	{
+		RemaindeBullets -= DefaultAmmo.Bullets;
+		CurrentAmmo.Clips++;
+	}
+}
+
 void AmmoSystem::ChangeClip()
 {
 	if (CurrentAmmo.Infinite == true)
@@ -72,8 +85,22 @@ void AmmoSystem::ChangeClip()
 		return;
 	}
 
-	CurrentAmmo.Clips--; 
+	SetRemaineBullet(RemaindeBullets + CurrentAmmo.Bullets);
+
+	if (CurrentAmmo.Clips == 0)
+	{
+		SetBullet(RemaindeBullets);
+		SetRemaineBullet(0);
+		return;
+	}
+
+	CurrentAmmo.Clips--;
 	SetFullBullet();
+}
+
+int32 AmmoSystem::GetAllBullets()
+{
+	return DefaultAmmo.Bullets * CurrentAmmo.Clips + RemaindeBullets;
 }
 
 bool AmmoSystem::TryAddAmmo(int32 ClipsAmount)

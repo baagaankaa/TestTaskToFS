@@ -52,6 +52,8 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
     PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &UWeaponComponent::StartFire);
     PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &UWeaponComponent::StopFire);
+
+    PlayerInputComponent->BindAction("Reload", IE_Released, WeaponComponent, &UWeaponComponent::ReloadWeapon);
 }
 
 void ABaseCharacter::MoveForward(float Amount)

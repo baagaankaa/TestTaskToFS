@@ -7,6 +7,7 @@
 #include "WeaponPickup.generated.h"
 
 class ABaseWeapon;
+class USkeletalMeshComponent;
 /**
  * 
  */

@@ -31,7 +31,12 @@ void ABaseWeapon::StartFire()
 
 void ABaseWeapon::StopFire()
 {
-	FireInProgress = true;
+	FireInProgress = false;
+}
+
+bool ABaseWeapon::CanFire(bool ReloadInProgress)
+{
+	return FireInProgress == false && ReloadInProgress == false;
 }
 
 void ABaseWeapon::ChangeClip()

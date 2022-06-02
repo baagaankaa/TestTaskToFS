@@ -1,62 +1,65 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "FAmmo.h"
+#include "AmmoSystem.h"
 
 
-void FAmmo::SetDefault(FAmmoData Ammo, ABaseWeapon* TargetWeapon)
+DEFINE_LOG_CATEGORY_STATIC(LogAmmo, All, All);
+
+void AmmoSystem::SetDefault(FAmmoData Ammo, ABaseWeapon* Weapon)
 {
 	DefaultAmmo = Ammo;
 	CurrentAmmo = DefaultAmmo;
 
-	this->Weapon = TargetWeapon;
+	TargetWeapon = Weapon;
 }
 
-bool FAmmo::IsClipEmpty() const
+bool AmmoSystem::IsClipEmpty() const
 {
 	return CurrentAmmo.Bullets == 0;
 }
 
-bool FAmmo::IsAmmoEmpty() const
+bool AmmoSystem::IsAmmoEmpty() const
 {
 	return CurrentAmmo.Infinite == false && CurrentAmmo.Clips == 0 && IsClipEmpty() == true;
 }
 
-bool FAmmo::IsAmmoFull() const
+bool AmmoSystem::IsAmmoFull() const
 {
 	return  CurrentAmmo.Clips == DefaultAmmo.Clips && 
 			CurrentAmmo.Bullets == DefaultAmmo.Bullets;
 }
 
-bool FAmmo::CanReload() const
+bool AmmoSystem::CanReload() const
 {
 	return CurrentAmmo.Bullets < DefaultAmmo.Bullets&& CurrentAmmo.Clips > 0;
 }
 
-bool FAmmo::DecreaseBullet()
+bool AmmoSystem::DecreaseBullet()
 {
 	SetBullet(CurrentAmmo.Bullets - 1);
 
 	if (IsClipEmpty() == true && IsAmmoEmpty() == false)
 	{
-		OnClipEmptied.Broadcast(Weapon);
+		UE_LOG(LogAmmo, Display, TEXT("Broadcast"));
+		OnClipEmptied.Broadcast(TargetWeapon);
 		return true;
 	}
 
 	return false;
 }
 
-void FAmmo::SetBullet(int Amount)
+void AmmoSystem::SetBullet(int Amount)
 {
 	CurrentAmmo.Bullets = FMath::Clamp(Amount, 0, DefaultAmmo.Bullets);
 }
 
-void FAmmo::SetFullBullet()
+void AmmoSystem::SetFullBullet()
 {
 	SetBullet(DefaultAmmo.Bullets);
 }
 
-void FAmmo::ChangeClip()
+void AmmoSystem::ChangeClip()
 {
 	if (CurrentAmmo.Infinite == true)
 	{
@@ -73,7 +76,7 @@ void FAmmo::ChangeClip()
 	SetFullBullet();
 }
 
-bool FAmmo::TryAddAmmo(int32 ClipsAmount)
+bool AmmoSystem::TryAddAmmo(int32 ClipsAmount)
 {
 	if (CurrentAmmo.Infinite == true || IsAmmoFull() == true || ClipsAmount <= 0)
 	{
@@ -83,7 +86,7 @@ bool FAmmo::TryAddAmmo(int32 ClipsAmount)
 	if (IsAmmoEmpty() == true)
 	{
 		CurrentAmmo.Clips = FMath::Clamp(ClipsAmount, 0, DefaultAmmo.Clips + 1);
-		OnClipEmptied.Broadcast(Weapon);
+		OnClipEmptied.Broadcast(TargetWeapon);
 		return true;
 	}
 

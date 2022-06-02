@@ -3,19 +3,19 @@
 #pragma once
 
 #include "Ammo/FAmmoData.h"
-#include "Ammo/FAmmo.h"
+#include "Ammo/AmmoSystem.h"
 
 class ABaseWeapon;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnClipEmptySignature, ABaseWeapon*);
 
-class FAmmo
+class AmmoSystem
 {
 private:
 	FAmmoData DefaultAmmo;
 	FAmmoData CurrentAmmo;
 
-	ABaseWeapon* Weapon = nullptr;
+	ABaseWeapon* TargetWeapon = nullptr;
 
 public:
 	void SetDefault(FAmmoData Ammo, ABaseWeapon* Weapon);

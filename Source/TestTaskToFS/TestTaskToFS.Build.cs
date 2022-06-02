@@ -19,6 +19,7 @@ public class TestTaskToFS : ModuleRules
 			"TestTaskToFS/Public/Pickups",
 			"TestTaskToFS/Public/Ammo",
 			"TestTaskToFS/Public/UI",
+			"TestTaskToFS/Public/UI/Elements",
 		});
 	}
 }

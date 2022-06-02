@@ -2,9 +2,33 @@
 
 
 #include "UI/CharacterHUDWidget.h"
+#include "TimerManager.h"
+#include "Engine/World.h"
+#include "Components/ProgressBar.h"
 #include "Components/WeaponComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogWidget, All, All);
+
+void UCharacterHUDWidget::NativeOnInitialized()
+{
+	Super::NativeOnInitialized();
+
+
+	UWeaponComponent* WeaponComponent = GetCharacterComponent<UWeaponComponent>();
+
+	if (WeaponComponent == nullptr)
+	{
+		return;
+	}
+
+	ReloadProgressElement = new ReloadProgressBarElement(ReloadProgressBar);
+	WeaponComponent->OnStartReload.AddUObject(this, &UCharacterHUDWidget::OnStartReload);
+}
+
+void UCharacterHUDWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	ReloadProgressElement->Tick(InDeltaTime);
+}
 
 FString UCharacterHUDWidget::GetBulletAmountFormat(bool& HasAmmo)
 {
@@ -25,36 +49,16 @@ FString UCharacterHUDWidget::GetBulletAmountFormat(bool& HasAmmo)
 	return GetFormatBullet(CurrentAmmoAmount, AllAmmoAmount);
 }
 
-float UCharacterHUDWidget::GetReloadProcessPercent(bool& InReloadProgress)
-{
-	if (GetWorld() == nullptr)
-	{
-		InReloadProgress = false;
-		return 0.0f;
-	}
-
-	UWeaponComponent* WeaponComponent = GetCharacterComponent<UWeaponComponent>();
-
-	if (WeaponComponent == nullptr)
-	{
-		InReloadProgress = false;
-		return 0.0f;
-	}
-
-
-	float ProgressPercent;
-	InReloadProgress = WeaponComponent->GetReloadProgress(ProgressPercent);
-
-	UE_LOG(LogWidget, Display, TEXT("InProgress: %i, Percent: %f"), InReloadProgress, ProgressPercent);
-
-	return ProgressPercent;
-}
 
 FString UCharacterHUDWidget::GetFormatBullet(int32 CurrentAmount, int32 MaxAmount)
 {
 	return FString::FromInt(CurrentAmount).AppendChar('/').Append(FString::FromInt(MaxAmount));
 }
 
+void UCharacterHUDWidget::OnStartReload(float Duration)
+{
+	ReloadProgressElement->OnStartReload(Duration);
+}
 
 template<typename T>
 T* UCharacterHUDWidget::GetCharacterComponent()

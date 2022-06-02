@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "UI/Elements/ReloadProgressBarElement.h"
 #include "CharacterHUDWidget.generated.h"
 
+class UProgressBar;
 /**
  * 
  */
@@ -17,13 +19,23 @@ class TESTTASKTOFS_API UCharacterHUDWidget : public UUserWidget
 public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	FString GetBulletAmountFormat(bool& HasAmmo);
-	UFUNCTION(BlueprintCallable, Category = "UI")
-	float GetReloadProcessPercent(bool& InReloadProgress);
 
+protected:
+	UPROPERTY(meta = (BindWidget))
+	UProgressBar* ReloadProgressBar;
+
+private:
+	ReloadProgressBarElement* ReloadProgressElement = nullptr;
+
+protected:
+
+	virtual void NativeOnInitialized() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 private:
 	template <typename T>
 	T* GetCharacterComponent();
 
 	FString GetFormatBullet(int32 CurrentAmount, int32 MaxAmount);
+	void OnStartReload(float Duration);
 };

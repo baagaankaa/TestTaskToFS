@@ -92,18 +92,6 @@ bool UWeaponComponent::GetCurrentAmmo(AmmoSystem*& Ammo)
 
 }
 
-bool UWeaponComponent::GetReloadProgress(float& Percent) const
-{
-	if (CurrentWeapon == nullptr || GetWorld() == nullptr)
-	{
-		Percent = 0.0f;
-		return false;
-	}
-
-	Percent = CurrentWeapon->GetReloadSeconds() / GetWorld()->GetTimerManager().GetTimerRemaining(ReloadProgressHandle);
-	return ReloadInProgress;
-}
-
 
 void UWeaponComponent::AttachWeaponToSocket(ABaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName)
 {
@@ -152,6 +140,8 @@ void UWeaponComponent::ChangeClip()
 	CurrentWeapon->StopFire();
 	GetWorld()->GetTimerManager()
 		.SetTimer(ReloadProgressHandle, this, &UWeaponComponent::ReloadEnded, CurrentWeapon->GetReloadSeconds(), false);
+
+	OnStartReload.Broadcast(CurrentWeapon->GetReloadSeconds());
 }
 
 void UWeaponComponent::ReloadEnded()

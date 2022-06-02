@@ -9,6 +9,8 @@
 
 class ABaseWeapon;
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnStartReloadSignature, float);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TESTTASKTOFS_API UWeaponComponent : public UActorComponent
 {
@@ -31,6 +33,8 @@ private:
 public:	
 	UWeaponComponent();
 
+	FOnStartReloadSignature OnStartReload;
+
 	void StartFire();
 	void StopFire();
 	void ReloadWeapon();
@@ -39,8 +43,6 @@ public:
 	bool TryAddClips(int32 Amount);
 
 	bool GetCurrentAmmo(AmmoSystem*& Ammo);
-
-	bool GetReloadProgress(float& Percent) const;
 
 protected:
 	virtual void BeginPlay() override;

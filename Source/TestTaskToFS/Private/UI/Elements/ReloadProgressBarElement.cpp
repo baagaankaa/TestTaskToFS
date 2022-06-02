@@ -42,15 +42,10 @@ void ReloadProgressBarElement::Tick(float DeltaTime)
 
 	Update(PastSeconds, ReloadDuration);
 
-	UE_LOG(LogReloadProgressBar, Display, TEXT("PastSeconds: %f, Duration %f"), PastSeconds, ReloadDuration);
-	UE_LOG(LogReloadProgressBar, Display, TEXT("Percent: %f"), ReloadProgressBar->Percent);
-	UE_LOG(LogReloadProgressBar, Display, TEXT("equal is : %i"), PastSeconds >= ReloadDuration);
-
 	if (PastSeconds < ReloadDuration)
 	{
 		return;
 	}
 
-	UE_LOG(LogReloadProgressBar, Display, TEXT("State: false"));
 	SetProgressState(false);
 }

@@ -20,6 +20,7 @@ public class TestTaskToFS : ModuleRules
 			"TestTaskToFS/Public/Ammo",
 			"TestTaskToFS/Public/UI",
 			"TestTaskToFS/Public/UI/Elements",
+			"TestTaskToFS/Public/Targets",
 		});
 	}
 }

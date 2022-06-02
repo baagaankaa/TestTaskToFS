@@ -3,6 +3,7 @@
 
 #include "Weapons/RifleWeapon.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogRifle, All, All);
 
 void ARifleWeapon::BeginPlay()
 {
@@ -47,6 +48,7 @@ void ARifleWeapon::MakeShot()
 		MakeDamage(HitResult);
 	}
 
+	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1.0f);
 	DecreaseAmmo();
 }
 

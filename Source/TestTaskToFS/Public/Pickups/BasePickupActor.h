@@ -8,6 +8,7 @@
 
 class USphereComponent;
 class USkeletalMeshComponent;
+class UStaticMeshComponent;
 
 UCLASS()
 class TESTTASKTOFS_API ABasePickupActor : public AActor
@@ -15,8 +16,6 @@ class TESTTASKTOFS_API ABasePickupActor : public AActor
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	USkeletalMeshComponent* MeshComponent;
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	USphereComponent* CollisionComponent;
 

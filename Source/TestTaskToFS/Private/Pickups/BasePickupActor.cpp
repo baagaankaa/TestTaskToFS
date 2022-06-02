@@ -8,15 +8,12 @@ ABasePickupActor::ABasePickupActor()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-    MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>("MeshComponent");
-    SetRootComponent(MeshComponent);
-
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
 	CollisionComponent->InitSphereRadius(50.0f);
 	CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-    CollisionComponent->SetupAttachment(MeshComponent);
 
+    SetRootComponent(CollisionComponent);
 }
 
 void ABasePickupActor::BeginPlay()

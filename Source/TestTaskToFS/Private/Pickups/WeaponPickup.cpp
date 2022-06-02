@@ -3,9 +3,10 @@
 
 #include "Pickups/WeaponPickup.h"
 #include "Components/WeaponComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 
 
-bool AWeaponPickup::GivePickupTo(APawn* PlayerPawn) 
+bool AWeaponPickup::GivePickupTo(APawn* PlayerPawn)
 {
     if (PlayerPawn == nullptr) 
     {

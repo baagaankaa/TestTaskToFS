@@ -16,7 +16,7 @@ class TESTTASKTOFS_API AAmmoPickup : public ABasePickupActor
 	GENERATED_BODY()
 
 
-public:
+protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Pickup")
 	int32 ClipsAmount;
 

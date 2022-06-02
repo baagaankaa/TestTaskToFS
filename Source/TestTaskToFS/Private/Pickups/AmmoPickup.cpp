@@ -3,6 +3,8 @@
 
 #include "Pickups/AmmoPickup.h"
 #include "Components/WeaponComponent.h"
+#include "Components/StaticMeshComponent.h"
+
 
 bool AAmmoPickup::GivePickupTo(APawn* PlayerPawn)
 {

@@ -17,6 +17,7 @@ public class TestTaskToFS : ModuleRules
 			"TestTaskToFS/Public/GameModes",
 			"TestTaskToFS/Public/Weapons",
 			"TestTaskToFS/Public/Pickups",
+			"TestTaskToFS/Public/Ammo",
 			"TestTaskToFS/Public/UI",
 		});
 	}

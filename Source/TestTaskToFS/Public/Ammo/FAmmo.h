@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Weapons/FAmmoData.h"
-#include "FAmmo.h"
+#include "Ammo/FAmmoData.h"
+#include "Ammo/FAmmo.h"
 
 class ABaseWeapon;
 

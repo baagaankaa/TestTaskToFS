@@ -33,8 +33,6 @@ void ABaseTarget::BeginPlay()
 void ABaseTarget::OnTakeDamage(
 	AActor* Actor, float Damage, const UDamageType* DamageType, AController* Controller, AActor* DamageCauser)
 {
-	UE_LOG(LogTarget, Display, TEXT("Damage: %f"), Damage);
-
 	GetWorldTimerManager().ClearTimer(TextVisibilityTimer);
 	GetWorldTimerManager().SetTimer(TextVisibilityTimer, this, &ABaseTarget::TimerEnded, TextVisibilityDuration, false);
 

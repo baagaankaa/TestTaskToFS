@@ -146,7 +146,6 @@ void UWeaponComponent::ChangeClip()
 
 void UWeaponComponent::ReloadEnded()
 {
-	UE_LOG(LogWeaponComponent, Display, TEXT("EndChangeClip"));
 	GetWorld()->GetTimerManager().ClearTimer(ReloadProgressHandle);
 
 	ReloadInProgress = false;
